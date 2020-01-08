@@ -2,15 +2,21 @@ import React from 'react'
 import Card from '../card/Card'
 import styles from './home.module.css'
 import { connect } from 'react-redux';
+import { removeCharacterAction } from '../../redux/charsDuck';
 
-function Home({ chars }) {
+function Home({ chars, removeCharacterAction }) {
 
     function renderCharacter() {
-        let char = chars[4];
+        let char = chars[0];
         return (
-            <Card {...char} />
+            <Card leftClick={nextCharacter} {...char} />
         )
     }
+
+    function nextCharacter () {
+        removeCharacterAction();
+    }
+
     return (
         <div className={styles.container}>
             <h2>Personajes de Rick y Morty</h2>
@@ -21,6 +27,8 @@ function Home({ chars }) {
     )
 }
 
+
+
 // extrae lo que tiene el store y los coloca en los props de este componente
 function mapStoreToProps (state) {
     return {
@@ -29,4 +37,4 @@ function mapStoreToProps (state) {
 }
 
 // connect se encarga de realizar la conexión con el store de redux
-export default connect(mapStoreToProps)(Home);
+export default connect(mapStoreToProps, { removeCharacterAction })(Home);

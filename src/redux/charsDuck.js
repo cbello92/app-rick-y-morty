@@ -13,10 +13,14 @@ let GET_CHARACTERS = "GET_CHARACTERS";
 let GET_CHARACTERS_SUCCESS = "GET_CHARACTERS_SUCCESS";
 let GET_CHARACTERS_ERROR = "GET_CHARACTERS_ERROR";
 
+let REMOVE_CHARACTER = "REMOVE_CHARACTER";
+
 // reducer
 // el reducer es el encargado de colocar los datos en el store, una vez que es disparado el action
 export default function reducer(state = initialdata, action) {
     switch (action.type) {
+        case REMOVE_CHARACTER:  
+            return { ...state, array: action.payload }
         case GET_CHARACTERS:
             return { ...state, fetching: true }
         case GET_CHARACTERS_SUCCESS:
@@ -31,6 +35,18 @@ export default function reducer(state = initialdata, action) {
 // actions (thunks)
 // realiza las conexiones al servidor para obtener los datos, dispatch es el encargado de desencadenar la accion
 // y pasarle los datos al reducer
+
+export function removeCharacterAction () {
+    return (dispatch, getState) => {
+        let { array } = getState().characters;
+        array.shift();
+        dispatch({
+            type: REMOVE_CHARACTER,
+            payload: [...array]
+        });
+    }
+}
+
 export function getCharactersAction() {
     return async (dispatch, getState) => {
         // este dispatch nos sirve para manejar el estado de loading de los datos
